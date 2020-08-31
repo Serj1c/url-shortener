@@ -1,0 +1,22 @@
+{
+  "name": "url-shortener-avito",
+  "version": "1.0.0",
+  "description": "a simple app to shorten long and ugly urls",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index"
+  },
+  "author": "Sergei Isaev",
+  "license": "MIT",
+  "dependencies": {
+    "config": "^3.3.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.2",
+    "shortid": "^2.2.15",
+    "valid-url": "^1.0.9"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
