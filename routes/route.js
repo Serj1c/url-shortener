@@ -1,71 +1,54 @@
 const express = require('express');
 const router = express.Router();
-const validUrl = require('valid-url');
 const config = require('config');
 const shortid = require('shortid');
 
-module.exports = router;
-
 const Url = require('../models/Url');
 
-// Create a post request to /api/shorturl/shorten
+router.get('/', (req, res) => {
+    res.send()
+})
+
+// Create a POST request to /shorten (a new db entry)
 
 router.post('/shorten', async (req, res) => {
-    const { originalUrl } = req.body;
-    const baseUrl = config.get('baseUrl');
-
-    // Check base url
-    if(!validUrl.isUri(baseUrl)) {
-        return res.status(401).json('Invalid baseUrl')
-    };
-    // Create url code for shortened url
-    const urlCode = shortid.generate();
-
-    // Check original url whether it is valid or not
-    if(validUrl.isUri(originalUrl)) {
-       try {
-           // Check whether url already exists in db
-           let url = await Url.findOne({ originalUrl });
-
-           if(url) {
-               res.json(url);
-           } else {
-               // if does not - create a new one and save it in db
-               const shortenedUrl = baseUrl + '/' + urlCode;
-
-               url = new Url({
-                urlCode,
-                originalUrl,
-                shortenedUrl,
-                date: new Date()
-               });
-               await url.save();
-               res.json(url);
-           }
-       } catch (err) {
-           console.error(err);
-           res.status(500).json('Server error');
-       }
-    } else {
-        return res.status(401).json('Invalid original url')
+    try {
+        // Check whether an originalUrl already exists in the db
+        let originalUrl = req.body.originalUrl;
+        let url = await Url.findOne({ originalUrl })
+        if(url) {
+            res.send(url);
+        } else {
+            const baseUrl = config.get('baseUrl');
+            const urlCode = shortid.generate();
+            const shortenedUrl = baseUrl + '/' + urlCode;
+            
+            // originalUrl does not exist in the db -> create an unstance in the db
+            url = new Url({ urlCode, originalUrl, shortenedUrl });
+            await url.save();
+            res.json(url);
+        }
+    } catch (error) {
+        console.log(error);
     }
 });
 
-// Create GET request
-// Reason: redirect to original url
+// Create a GET request --> redirect to original URL
 
-router.get('/:code', async (req, res) => {
+router.get('/:shortUrl', async (req, res) => {
     try {
         // Find shortened url in db 
-        const url = await Url.findOne({ urlCode: req.params.code }); 
+        const url = await Url.findOne({ urlCode: req.params.shortUrl }); 
         
         if(url) {
             res.redirect(url.originalUrl);
         } else {
-            res.status(404).json("Url not found!")
+            res.status(404).json("Not found :(")
         }
     } catch (err) {
         console.error(err);
-        res.status(500).json("Server error")
+        res.status(500).json("Error, possibly on the server")
     }
-})
+});
+
+module.exports = router;

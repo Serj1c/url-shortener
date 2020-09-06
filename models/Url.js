@@ -1,10 +1,18 @@
 const mongoose = require('mongoose');
 
 const urlSchema = new mongoose.Schema({
-    urlCode: String,
-    originalUrl: String,
-    shortenedUrl: String,
-    date: { type: String, default: Date.now }
+    urlCode: {
+        type: String,
+        require: true
+    },
+    originalUrl: {
+        type: String,
+        require: true
+    },
+    shortenedUrl: {
+        type: String,
+        require: true
+    }
 });
 
 module.exports = mongoose.model('Url', urlSchema);

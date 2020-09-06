@@ -1,6 +1,0 @@
-POST http://localhost:5001/api/shorturl/shorten
-Content-Type: application/json
-
-{
-    "originalUrl": "https://www.amazon.com/Apple-MWP22AM-A-AirPods-Pro/dp/B07ZPC9QD4/ref=sr_1_2?dchild=1&fst=as%3Aoff&pf_rd_i=16225009011&pf_rd_m=ATVPDKIKX0DER&pf_rd_p=ce987da1-b370-4b55-a7c2-b79bf2e3ba39&pf_rd_r=K88E072V0ZCWGXSNJ5KE&pf_rd_s=merchandised-search-6&pf_rd_t=101&qid=1486427576&refinements=p_n_shipping_option-bin%3A3242350011&rnid=493964&s=electronics&sr=1-2"
-} 

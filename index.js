@@ -8,9 +8,13 @@ connectDB();
 
 app.use(express.json({ extended: false}));
 
+// Serve static index.html
+app.use(express.static('./public'));
+
 // Define routes
 app.use('/', require('./routes/route'));
-app.use('/api/shorturl', require('./routes/route'))
+app.use('/shorten', require('./routes/route'));
+app.use('/:shortUrl', require('./routes/route'));
 
 const PORT = 5001;
 
